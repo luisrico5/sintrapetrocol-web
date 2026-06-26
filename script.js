@@ -36,8 +36,9 @@ document.addEventListener('DOMContentLoaded', () => {
   /* ── 2. PARALLAX EN HERO ────────────────────── */
   const heroImageWrap = document.querySelector('.hero__image-wrap');
   const heroSection   = document.querySelector('.hero');
+  const isTouchDevice = window.matchMedia('(pointer: coarse)').matches;
 
-  if (heroImageWrap && heroSection && !prefersReducedMotion()) {
+  if (heroImageWrap && heroSection && !prefersReducedMotion() && !isTouchDevice) {
     let ticking = false;
 
     window.addEventListener('scroll', () => {

@@ -1368,3 +1368,146 @@ address {
     transform: none !important;
   }
 }
+
+/* ════════════════════════════════════════════════
+   OPTIMIZACIONES MÓVIL
+   ════════════════════════════════════════════════ */
+
+/* Scroll compensa el header sticky en anclas */
+html {
+  scroll-padding-top: 72px;
+}
+
+/* Mejor rendering de texto en iOS y Android */
+body {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  /* Evita flash de resaltado azul al tocar en iOS */
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Todos los links y botones: mejor respuesta táctil */
+a, button, [role="button"] {
+  touch-action: manipulation;
+}
+
+/* Nav toggle: área táctil mínima 44×44px */
+.nav-toggle {
+  min-width: 44px;
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Social links topbar: área táctil mínima */
+.topbar__social-link {
+  width: 32px;
+  height: 32px;
+}
+
+/* Efectos hover SOLO en dispositivos con puntero preciso (ratón) */
+@media (hover: none) {
+  .announcement-card:hover {
+    transform: none;
+    box-shadow: var(--shadow-sm);
+  }
+  .objective-card:hover {
+    transform: none;
+    box-shadow: none;
+  }
+  .structure-card:hover {
+    box-shadow: none;
+  }
+  .benefit-item:hover {
+    box-shadow: none;
+  }
+  /* Estado :active en lugar de :hover para feedback táctil */
+  .announcement-card:active { transform: translateX(3px); }
+  .objective-card:active    { box-shadow: var(--shadow-md); }
+  .btn:active               { opacity: 0.85; }
+}
+
+/* ── Pantallas < 480px ─────────────────────────── */
+@media (max-width: 479px) {
+  /* Topbar: ocultar info de contacto, centrar redes sociales */
+  .topbar__contact { display: none; }
+  .topbar__inner   { justify-content: center; }
+
+  /* Hero: reducir altura y tamaño del logo */
+  .hero {
+    padding: 2.5rem 0 2rem;
+    min-height: auto;
+  }
+  .hero__image-wrap { width: 130px; }
+  .hero__inner      { gap: 1.5rem; }
+
+  /* Stats: 2 cols compactos */
+  .stats__grid { gap: 0; }
+  .stat-item   { padding: 1rem 0.5rem; }
+
+  /* Secciones: reducir padding vertical */
+  .announcements,
+  .about,
+  .objectives,
+  .statement,
+  .membership,
+  .structure,
+  .rights {
+    padding: 3rem 0;
+  }
+
+  /* Footer: 1 sola columna */
+  .footer__grid {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+    padding-block: 3rem 2rem;
+  }
+
+  /* Cards de anuncios: menos padding */
+  .announcement-card { padding: 1rem 1rem 0.75rem; }
+
+  /* Botones hero apilados */
+  .hero__actions {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.65rem;
+  }
+  .hero__actions .btn { text-align: center; }
+
+  /* Membership benefits sin columna al lado */
+  .membership__cta { margin-top: 1rem; }
+}
+
+/* ── Safe area para iPhone con notch / Dynamic Island ── */
+@supports (padding: env(safe-area-inset-top)) {
+  .header {
+    padding-left:  env(safe-area-inset-left);
+    padding-right: env(safe-area-inset-right);
+  }
+  .topbar {
+    padding-left:  env(safe-area-inset-left);
+    padding-right: env(safe-area-inset-right);
+  }
+  .footer__bottom {
+    padding-bottom: calc(var(--space-sm) + env(safe-area-inset-bottom));
+  }
+}
+
+/* ── will-change solo en elementos activamente animados ── */
+.hero__img,
+.hero__image-wrap {
+  will-change: transform;
+}
+
+.reveal,
+.reveal-stagger > * {
+  will-change: transform, opacity;
+}
+
+/* Limpiar will-change después de que la animación termina */
+.reveal.is-visible,
+.reveal-stagger.is-visible > * {
+  will-change: auto;
+}
