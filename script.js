@@ -108,6 +108,11 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   /* ── 5. FORMULARIO DE AFILIACIÓN ────────────── */
+
+  // Botones de imprimir (sustituye onclick inline — bloqueado por CSP)
+  document.getElementById('btnPrint')?.addEventListener('click', () => window.print());
+  document.getElementById('btnPrintSuccess')?.addEventListener('click', () => window.print());
+
   const form = document.getElementById('afForm');
   if (!form) return;
 

@@ -43,7 +43,7 @@
         <h2>¡Solicitud enviada correctamente!</h2>
         <p>La Junta Directiva de SINTRAPETROCOL recibirá tu solicitud de afiliación y se comunicará contigo pronto.</p>
         <div class="af-success__actions">
-          <button onclick="window.print()" class="btn btn--primary">Imprimir copia</button>
+          <button id="btnPrintSuccess" class="btn btn--primary">Imprimir copia</button>
           <a href="index.html" class="btn btn--outline-dark">Volver al inicio</a>
         </div>
       </div>
@@ -235,7 +235,7 @@
             <span class="af-btn-submit__text">&#128231; Guardar Solicitud</span>
             <span class="af-btn-submit__loading" hidden>Enviando...</span>
           </button>
-          <button type="button" class="btn btn--outline-dark" onclick="window.print()">
+          <button type="button" id="btnPrint" class="btn btn--outline-dark">
             &#128424; Imprimir Formulario
           </button>
         </div>
