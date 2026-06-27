@@ -1971,13 +1971,13 @@ a, button, [role="button"] {
   .af-letter-body {
     border-left: 2pt solid #000 !important;
     background: white !important;
-    padding: 7pt 12pt !important;
-    margin-bottom: 12pt !important;
+    padding: 6pt 11pt !important;
+    margin-bottom: 9pt !important;
   }
 
   .af-letter-body p {
     font-size: 8pt !important;
-    line-height: 1.85 !important;
+    line-height: 1.65 !important;
     color: #000 !important;
     text-align: justify !important;
   }
@@ -1985,8 +1985,8 @@ a, button, [role="button"] {
   /* ── Fieldset de datos personales ── */
   .af-fieldset {
     border: 1pt solid #444 !important;
-    padding: 6pt 10pt 10pt !important;
-    margin-bottom: 10pt !important;
+    padding: 6pt 10pt 8pt !important;
+    margin-bottom: 8pt !important;
   }
 
   .af-fieldset__legend {
@@ -1998,7 +1998,7 @@ a, button, [role="button"] {
   }
 
   /* Grillas de campos */
-  .af-row { gap: 10pt !important; margin-bottom: 11pt !important; }
+  .af-row { gap: 8pt !important; margin-bottom: 9pt !important; }
   .af-row--2 { grid-template-columns: 1fr 1fr !important; }
   .af-row--3 { grid-template-columns: 1fr 1fr 1fr !important; }
   .af-row--nacimiento {
@@ -2034,18 +2034,18 @@ a, button, [role="button"] {
   .af-signature-row {
     display: flex !important;
     align-items: flex-end !important;
-    gap: 16pt !important;
+    gap: 14pt !important;
     background: white !important;
     border: 1pt dashed #999 !important;
-    padding: 8pt 12pt !important;
-    margin-bottom: 10pt !important;
+    padding: 6pt 10pt !important;
+    margin-bottom: 8pt !important;
     flex-wrap: nowrap !important;
   }
 
   .af-signature-block { flex: 2 !important; }
 
   .af-signature-line {
-    height: 56pt !important;
+    height: 46pt !important;
     border-bottom: 1.25pt solid #000 !important;
     margin-bottom: 3pt !important;
   }
@@ -2058,13 +2058,13 @@ a, button, [role="button"] {
   .af-junta {
     background: #f5f5f5 !important;
     border: 1pt solid #999 !important;
-    padding: 12pt 14pt !important;
+    padding: 8pt 12pt !important;
     margin-bottom: 0 !important;
   }
 
-  .af-junta__title { font-size: 8pt !important; margin-bottom: 7pt !important; }
-  .af-junta__text  { font-size: 9pt !important; line-height: 2.6 !important; margin-bottom: 8pt !important; }
-  .af-junta__field { font-size: 9pt !important; gap: 4pt !important; }
+  .af-junta__title { font-size: 7.5pt !important; margin-bottom: 5pt !important; }
+  .af-junta__text  { font-size: 8.5pt !important; line-height: 2.2 !important; margin-bottom: 6pt !important; }
+  .af-junta__field { font-size: 8.5pt !important; gap: 4pt !important; }
   .af-junta__blank { border-bottom: 1pt solid #000 !important; }
   .af-junta .af-row { margin-bottom: 0 !important; gap: 10pt !important; }
 }
