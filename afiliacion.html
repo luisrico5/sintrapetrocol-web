@@ -4,11 +4,16 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="theme-color" content="#1a2d5a" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://cdn.jsdelivr.net; connect-src https://api.emailjs.com; img-src 'self' data:; style-src 'self';" />
+  <meta http-equiv="X-Frame-Options" content="SAMEORIGIN" />
+  <meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin" />
   <title>Solicitud de Afiliación — SINTRAPETROCOL</title>
   <link rel="preload" as="image" href="logo.webp" type="image/webp" />
   <link rel="stylesheet" href="styles.css" />
   <!-- EmailJS — servicio de correo sin backend -->
-  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"
+          integrity="sha384-SALc35EccAf6RzGw4iNsyj7kTPr33K7RoGzYu+7heZhT8s0GZouafRiCg1qy44AS"
+          crossorigin="anonymous"></script>
 </head>
 <body class="page-afiliacion">
 
@@ -86,7 +91,7 @@
             de los trabajadores de esta empresa. De igual manera autorizo a ustedes, para que soliciten a la empresa
             en virtud del Capítulo II artículo 5 de la CCT, los descuentos estipulados en el capítulo IX artículos
             41, 42 y 43 de los estatutos vigentes de SINTRAPETROCOL, aprobados en asamblea general de afiliados
-            el 19 de Noviembre de 2004.
+            el 22 de septiembre de 2023.
           </p>
         </div>
 
@@ -214,6 +219,12 @@
               <span class="af-junta__blank af-junta__blank--lg"></span>
             </div>
           </div>
+        </div>
+
+        <!-- Campo honeypot antibot — oculto para humanos, visible para bots -->
+        <div class="af-honeypot" aria-hidden="true">
+          <label for="website">No completar</label>
+          <input type="text" id="website" name="website" tabindex="-1" autocomplete="off" />
         </div>
 
         <!-- ═══════════════════════════════════

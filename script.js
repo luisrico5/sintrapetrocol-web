@@ -203,14 +203,45 @@ document.addEventListener('DOMContentLoaded', () => {
 
 /* ── HELPER: validar formulario ───────────────── */
 function validateForm(form) {
+  // Honeypot antibot: si está relleno, es un bot
+  const honeypot = form.querySelector('#website');
+  if (honeypot && honeypot.value.trim() !== '') return false;
+
   let valid = true;
+
   form.querySelectorAll('[required]').forEach(input => {
     input.classList.remove('af-invalid');
-    if (!input.value.trim()) {
+    const val = input.value.trim();
+
+    if (!val) {
       input.classList.add('af-invalid');
       valid = false;
+      return;
+    }
+
+    // Validaciones de formato
+    if (input.id === 'cedula' || input.id === 'cedulaFirma') {
+      if (!/^\d{6,10}$/.test(val)) {
+        input.classList.add('af-invalid');
+        valid = false;
+      }
+    }
+
+    if (input.id === 'telCelular') {
+      if (!/^3\d{9}$/.test(val.replace(/\s/g, ''))) {
+        input.classList.add('af-invalid');
+        valid = false;
+      }
+    }
+
+    if (input.type === 'email') {
+      if (!input.checkValidity()) {
+        input.classList.add('af-invalid');
+        valid = false;
+      }
     }
   });
+
   if (!valid) {
     form.querySelector('.af-invalid')?.focus();
     form.querySelector('.af-invalid')?.scrollIntoView({ behavior: 'smooth', block: 'center' });

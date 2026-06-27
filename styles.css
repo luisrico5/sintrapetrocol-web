@@ -1864,6 +1864,17 @@ a, button, [role="button"] {
   margin-top: 0.75rem;
 }
 
+/* Honeypot antibot — invisible para humanos */
+.af-honeypot {
+  position: absolute;
+  left: -9999px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  opacity: 0;
+  pointer-events: none;
+}
+
 .btn--outline-dark {
   background-color: transparent;
   color: var(--color-primary);
