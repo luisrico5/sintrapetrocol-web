@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#1a2d5a" />
+  <title>Solicitud de Afiliación — SINTRAPETROCOL</title>
+  <link rel="preload" as="image" href="logo.webp" type="image/webp" />
+  <link rel="stylesheet" href="styles.css" />
+  <!-- EmailJS — servicio de correo sin backend -->
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+</head>
+<body class="page-afiliacion">
+
+  <!-- NAV SIMPLE -->
+  <header class="header" id="header">
+    <div class="container header__inner">
+      <a href="index.html" class="header__brand">
+        <picture>
+          <source type="image/webp" srcset="logo.webp" />
+          <img src="logo.png" alt="Escudo SINTRAPETROCOL" class="header__logo" width="56" height="56" decoding="async" />
+        </picture>
+        <div class="header__brand-text">
+          <span class="header__name">SINTRAPETROCOL</span>
+          <span class="header__tagline">Sindicato de Trabajadores de MEXICHEM RESINAS COLOMBIA S.A.S</span>
+        </div>
+      </a>
+      <a href="index.html" class="btn btn--outline af-back-btn">&#8592; Volver al inicio</a>
+    </div>
+  </header>
+
+  <main class="af-main">
+    <div class="af-container">
+
+      <!-- MENSAJE DE ÉXITO (oculto hasta envío) -->
+      <div class="af-success" id="afSuccess" hidden>
+        <span class="af-success__icon">&#10003;</span>
+        <h2>¡Solicitud enviada correctamente!</h2>
+        <p>La Junta Directiva de SINTRAPETROCOL recibirá tu solicitud de afiliación y se comunicará contigo pronto.</p>
+        <div class="af-success__actions">
+          <button onclick="window.print()" class="btn btn--primary">Imprimir copia</button>
+          <a href="index.html" class="btn btn--outline-dark">Volver al inicio</a>
+        </div>
+      </div>
+
+      <!-- FORMULARIO -->
+      <form class="af-form" id="afForm" novalidate>
+
+        <!-- ═══════════════════════════════════
+             ENCABEZADO DEL DOCUMENTO
+             ═══════════════════════════════════ -->
+        <div class="af-doc-header">
+          <div class="af-doc-header__logo">
+            <picture>
+              <source type="image/webp" srcset="logo.webp" />
+              <img src="logo.png" alt="SINTRAPETROCOL" width="90" height="90" decoding="async" />
+            </picture>
+          </div>
+          <div class="af-doc-header__text">
+            <h1 class="af-doc-header__union">SINDICATO DE BASE DE TRABAJADORES DE PETROQUÍMICA COLOMBIANA S.A.</h1>
+            <p class="af-doc-header__acronym">(S I N T R A P E T R O C O L)</p>
+            <p class="af-doc-header__legal">Personería Jurídica No.01237 de Agosto 26 de 1966 &nbsp;|&nbsp; NIT: 890.480.573-6</p>
+            <p class="af-doc-header__address">Dirección: Edificio Concasa Oficina 405 &nbsp;|&nbsp; Tel: 6642098 &nbsp;|&nbsp; Fax: 6645049</p>
+            <p class="af-doc-header__email">E-Mail: xxxxxxxxxx@sintrapetrocol.com</p>
+          </div>
+        </div>
+
+        <!-- ═══════════════════════════════════
+             FECHA DE SOLICITUD
+             ═══════════════════════════════════ -->
+        <div class="af-date-row">
+          <label class="af-date-label" for="fechaSolicitud">FECHA DE SOLICITUD:</label>
+          <input type="date" id="fechaSolicitud" name="fechaSolicitud" class="af-input af-input--date" required />
+        </div>
+
+        <!-- ═══════════════════════════════════
+             TEXTO FORMAL DE LA CARTA
+             ═══════════════════════════════════ -->
+        <div class="af-letter-body">
+          <p>
+            Compañeros (as) <strong>JUNTA DIRECTIVA SINTRAPETROCOL</strong><br />
+            Como trabajador de la empresa <strong>Mexichem Resinas Colombia S.A.S</strong>, me permito solicitarles
+            formalmente mi admisión como socio activo del Sindicato <strong>SINTRAPETROCOL</strong>. De ser aceptado(a)
+            me comprometo a cumplir fielmente y a cabalidad las normas y los estatutos que rigen esta organización,
+            así mismo acatar las directrices que impartan sus directivos y a luchar consecuentemente por los derechos
+            de los trabajadores de esta empresa. De igual manera autorizo a ustedes, para que soliciten a la empresa
+            en virtud del Capítulo II artículo 5 de la CCT, los descuentos estipulados en el capítulo IX artículos
+            41, 42 y 43 de los estatutos vigentes de SINTRAPETROCOL, aprobados en asamblea general de afiliados
+            el 19 de Noviembre de 2004.
+          </p>
+        </div>
+
+        <!-- ═══════════════════════════════════
+             DATOS PERSONALES
+             ═══════════════════════════════════ -->
+        <fieldset class="af-fieldset">
+          <legend class="af-fieldset__legend">DATOS PERSONALES</legend>
+
+          <div class="af-row af-row--2">
+            <div class="af-field">
+              <label class="af-label" for="nombres">Nombres <span class="af-req">*</span></label>
+              <input type="text" id="nombres" name="nombres" class="af-input" placeholder="Nombres completos" required />
+            </div>
+            <div class="af-field">
+              <label class="af-label" for="apellidos">Apellidos <span class="af-req">*</span></label>
+              <input type="text" id="apellidos" name="apellidos" class="af-input" placeholder="Apellidos completos" required />
+            </div>
+          </div>
+
+          <div class="af-row af-row--2">
+            <div class="af-field">
+              <label class="af-label" for="cedula">Cédula de Ciudadanía <span class="af-req">*</span></label>
+              <input type="text" id="cedula" name="cedula" class="af-input" placeholder="Número de cédula" required />
+            </div>
+            <div class="af-field">
+              <label class="af-label" for="expedidaEn">Expedida en</label>
+              <input type="text" id="expedidaEn" name="expedidaEn" class="af-input" placeholder="Ciudad de expedición" />
+            </div>
+          </div>
+
+          <div class="af-row af-row--nacimiento">
+            <div class="af-field">
+              <label class="af-label" for="fnDia">Fecha de Nacimiento — Día</label>
+              <input type="number" id="fnDia" name="fnDia" class="af-input af-input--sm" min="1" max="31" placeholder="DD" />
+            </div>
+            <div class="af-field">
+              <label class="af-label" for="fnMes">Mes</label>
+              <input type="number" id="fnMes" name="fnMes" class="af-input af-input--sm" min="1" max="12" placeholder="MM" />
+            </div>
+            <div class="af-field">
+              <label class="af-label" for="fnAno">Año</label>
+              <input type="number" id="fnAno" name="fnAno" class="af-input af-input--sm" min="1930" max="2010" placeholder="AAAA" />
+            </div>
+            <div class="af-field af-field--grow">
+              <label class="af-label" for="fnLugar">Lugar de Nacimiento</label>
+              <input type="text" id="fnLugar" name="fnLugar" class="af-input" placeholder="Municipio o ciudad" />
+            </div>
+            <div class="af-field">
+              <label class="af-label" for="fnDpto">Dpto.</label>
+              <input type="text" id="fnDpto" name="fnDpto" class="af-input" placeholder="Departamento" />
+            </div>
+          </div>
+
+          <div class="af-row af-row--2">
+            <div class="af-field">
+              <label class="af-label" for="direccion">Dirección de Residencia <span class="af-req">*</span></label>
+              <input type="text" id="direccion" name="direccion" class="af-input" placeholder="Calle, carrera, número..." required />
+            </div>
+            <div class="af-field">
+              <label class="af-label" for="barrio">Barrio</label>
+              <input type="text" id="barrio" name="barrio" class="af-input" placeholder="Barrio" />
+            </div>
+          </div>
+
+          <div class="af-row af-row--3">
+            <div class="af-field">
+              <label class="af-label" for="municipio">Municipio</label>
+              <input type="text" id="municipio" name="municipio" class="af-input" placeholder="Municipio" />
+            </div>
+            <div class="af-field">
+              <label class="af-label" for="telFijo">Tel. Fijo</label>
+              <input type="tel" id="telFijo" name="telFijo" class="af-input" placeholder="Teléfono fijo" />
+            </div>
+            <div class="af-field">
+              <label class="af-label" for="telCelular">Tel. Celular <span class="af-req">*</span></label>
+              <input type="tel" id="telCelular" name="telCelular" class="af-input" placeholder="Número celular" required />
+            </div>
+          </div>
+
+          <div class="af-row af-row--1">
+            <div class="af-field">
+              <label class="af-label" for="correo">Correo Electrónico <span class="af-req">*</span></label>
+              <input type="email" id="correo" name="correo" class="af-input" placeholder="correo@ejemplo.com" required />
+            </div>
+          </div>
+        </fieldset>
+
+        <!-- ═══════════════════════════════════
+             FIRMA Y DATOS DE IDENTIFICACIÓN
+             ═══════════════════════════════════ -->
+        <div class="af-signature-row">
+          <div class="af-signature-block">
+            <div class="af-signature-line" aria-label="Espacio para firma física"></div>
+            <p class="af-signature-label">Firma del Solicitante</p>
+          </div>
+          <div class="af-field">
+            <label class="af-label" for="cedulaFirma">Número Cédula</label>
+            <input type="text" id="cedulaFirma" name="cedulaFirma" class="af-input" placeholder="N° cédula" />
+          </div>
+          <div class="af-field">
+            <label class="af-label" for="codigo">Código Empleado</label>
+            <input type="text" id="codigo" name="codigo" class="af-input" placeholder="Código" />
+          </div>
+        </div>
+
+        <!-- ═══════════════════════════════════
+             USO EXCLUSIVO JUNTA DIRECTIVA
+             ═══════════════════════════════════ -->
+        <div class="af-junta">
+          <p class="af-junta__title">Nota: Uso exclusivo de la Junta Directiva</p>
+          <p class="af-junta__text">
+            Estudiada la presente solicitud, esta fue aprobada en Asamblea General celebrada el día
+            <span class="af-junta__blank"></span> del mes de
+            <span class="af-junta__blank af-junta__blank--lg"></span> del
+            <span class="af-junta__blank af-junta__blank--md"></span>.
+          </p>
+          <div class="af-row af-row--2">
+            <div class="af-junta__field">
+              <span>N° Acta Junta Directiva:</span>
+              <span class="af-junta__blank af-junta__blank--lg"></span>
+            </div>
+            <div class="af-junta__field">
+              <span>N° Acta Asamblea General:</span>
+              <span class="af-junta__blank af-junta__blank--lg"></span>
+            </div>
+          </div>
+        </div>
+
+        <!-- ═══════════════════════════════════
+             BOTONES DE ACCIÓN
+             ═══════════════════════════════════ -->
+        <div class="af-actions no-print">
+          <button type="submit" class="btn btn--primary af-btn-submit" id="btnSubmit">
+            <span class="af-btn-submit__text">&#128231; Guardar Solicitud</span>
+            <span class="af-btn-submit__loading" hidden>Enviando...</span>
+          </button>
+          <button type="button" class="btn btn--outline-dark" onclick="window.print()">
+            &#128424; Imprimir Formulario
+          </button>
+        </div>
+
+        <!-- Mensaje de error -->
+        <p class="af-error" id="afError" hidden>
+          &#9888; Hubo un error al enviar. Verifica tu conexión e intenta de nuevo.
+        </p>
+
+      </form>
+    </div>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>

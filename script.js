@@ -4,13 +4,28 @@
    2. Parallax en hero
    3. Scroll reveal (IntersectionObserver)
    4. Contadores animados
+   5. Formulario de afiliación + EmailJS
    ============================================= */
+
+/* ══════════════════════════════════════════════
+   CONFIGURACIÓN EMAILJS
+   ─────────────────────────────────────────────
+   Para activar el envío de correo:
+   1. Crear cuenta gratis en https://www.emailjs.com
+   2. Añadir un servicio de correo (Gmail, Outlook…)
+   3. Crear una plantilla con las variables del formulario
+   4. Reemplazar los 3 valores de abajo con tus credenciales
+   ══════════════════════════════════════════════ */
+const EMAILJS_PUBLIC_KEY  = 'TU_PUBLIC_KEY';
+const EMAILJS_SERVICE_ID  = 'TU_SERVICE_ID';
+const EMAILJS_TEMPLATE_ID = 'TU_TEMPLATE_ID';
+const UNION_EMAIL         = 'xxxxxxxxxx@sintrapetrocol.com';
 
 document.addEventListener('DOMContentLoaded', () => {
 
   /* ── 1. MENÚ MÓVIL ─────────────────────────── */
-  const toggle  = document.getElementById('navToggle');
-  const nav     = document.getElementById('mainNav');
+  const toggle = document.getElementById('navToggle');
+  const nav    = document.getElementById('mainNav');
 
   if (toggle && nav) {
     toggle.addEventListener('click', () => {
@@ -40,17 +55,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
   if (heroImageWrap && heroSection && !prefersReducedMotion() && !isTouchDevice) {
     let ticking = false;
-
     window.addEventListener('scroll', () => {
       if (!ticking) {
         requestAnimationFrame(() => {
-          const scrollY  = window.scrollY;
-          const heroH    = heroSection.offsetHeight;
-
-          if (scrollY < heroH * 1.5) {
-            // El logo sube más lento que el scroll → sensación de profundidad
-            const offset = scrollY * 0.18;
-            heroImageWrap.style.transform = `translateY(calc(-${offset}px))`;
+          const scrollY = window.scrollY;
+          if (scrollY < heroSection.offsetHeight * 1.5) {
+            heroImageWrap.style.transform = `translateY(calc(-${scrollY * 0.18}px))`;
           }
           ticking = false;
         });
@@ -74,7 +84,6 @@ document.addEventListener('DOMContentLoaded', () => {
       revealObserver.observe(el);
     });
   } else {
-    // Sin soporte o reduced-motion: mostrar todo de inmediato
     document.querySelectorAll('.reveal, .reveal-stagger').forEach(el => {
       el.classList.add('is-visible');
     });
@@ -85,48 +94,167 @@ document.addEventListener('DOMContentLoaded', () => {
     const counterObserver = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
-          const el     = entry.target;
-          const target = parseInt(el.dataset.count, 10);
-          animateCounter(el, target);
-          counterObserver.unobserve(el);
+          animateCounter(entry.target, parseInt(entry.target.dataset.count, 10));
+          counterObserver.unobserve(entry.target);
         }
       });
     }, { threshold: 0.6 });
 
-    document.querySelectorAll('[data-count]').forEach(el => {
-      counterObserver.observe(el);
-    });
+    document.querySelectorAll('[data-count]').forEach(el => counterObserver.observe(el));
   } else {
-    // Sin soporte: mostrar valor final directamente
     document.querySelectorAll('[data-count]').forEach(el => {
       el.textContent = el.dataset.count;
     });
   }
 
-});
+  /* ── 5. FORMULARIO DE AFILIACIÓN ────────────── */
+  const form = document.getElementById('afForm');
+  if (!form) return;
 
-/* ── HELPER: anima un número de 0 a target ─────── */
-function animateCounter(el, target, duration = 1600) {
-  const startTime = performance.now();
-
-  function update(currentTime) {
-    const elapsed  = currentTime - startTime;
-    const progress = Math.min(elapsed / duration, 1);
-    // Easing: ease-out cubic
-    const eased    = 1 - Math.pow(1 - progress, 3);
-    el.textContent = Math.round(eased * target);
-
-    if (progress < 1) {
-      requestAnimationFrame(update);
-    } else {
-      el.textContent = target;
-    }
+  // Pre-llenar fecha con hoy
+  const fechaInput = document.getElementById('fechaSolicitud');
+  if (fechaInput && !fechaInput.value) {
+    fechaInput.value = new Date().toISOString().split('T')[0];
   }
 
+  // Sincronizar cédula al campo de firma
+  const cedulaMain  = document.getElementById('cedula');
+  const cedulaFirma = document.getElementById('cedulaFirma');
+  if (cedulaMain && cedulaFirma) {
+    cedulaMain.addEventListener('input', () => {
+      if (!cedulaFirma.value) cedulaFirma.value = cedulaMain.value;
+    });
+  }
+
+  // Inicializar EmailJS si la clave está configurada
+  const emailjsReady = EMAILJS_PUBLIC_KEY !== 'TU_PUBLIC_KEY';
+  if (emailjsReady && typeof emailjs !== 'undefined') {
+    emailjs.init(EMAILJS_PUBLIC_KEY);
+  }
+
+  // Envío del formulario
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    if (!validateForm(form)) return;
+
+    const btnSubmit  = document.getElementById('btnSubmit');
+    const btnText    = btnSubmit.querySelector('.af-btn-submit__text');
+    const btnLoading = btnSubmit.querySelector('.af-btn-submit__loading');
+    const errorEl    = document.getElementById('afError');
+
+    // Estado de carga
+    btnText.hidden    = true;
+    btnLoading.hidden = false;
+    btnSubmit.disabled = true;
+    errorEl.hidden     = true;
+
+    const datos = collectFormData(form);
+
+    try {
+      if (emailjsReady && typeof emailjs !== 'undefined') {
+        // Envío real via EmailJS
+        await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, {
+          to_email:       UNION_EMAIL,
+          fecha:          datos.fechaSolicitud,
+          nombres:        datos.nombres,
+          apellidos:      datos.apellidos,
+          cedula:         datos.cedula,
+          expedida_en:    datos.expedidaEn,
+          fn_dia:         datos.fnDia,
+          fn_mes:         datos.fnMes,
+          fn_ano:         datos.fnAno,
+          fn_lugar:       datos.fnLugar,
+          fn_dpto:        datos.fnDpto,
+          direccion:      datos.direccion,
+          barrio:         datos.barrio,
+          municipio:      datos.municipio,
+          tel_fijo:       datos.telFijo,
+          tel_celular:    datos.telCelular,
+          correo:         datos.correo,
+          codigo:         datos.codigo,
+        });
+      } else {
+        // Fallback: abrir cliente de correo con los datos
+        const cuerpo = buildEmailBody(datos);
+        const mailto = `mailto:${UNION_EMAIL}`
+          + `?subject=${encodeURIComponent('Solicitud de Afiliación — ' + datos.nombres + ' ' + datos.apellidos)}`
+          + `&body=${encodeURIComponent(cuerpo)}`;
+        window.location.href = mailto;
+        // Simular éxito después del mailto
+        await new Promise(r => setTimeout(r, 800));
+      }
+
+      // Mostrar éxito
+      form.hidden = true;
+      document.getElementById('afSuccess').hidden = false;
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+
+    } catch (err) {
+      console.error('EmailJS error:', err);
+      errorEl.hidden = false;
+      btnText.hidden    = false;
+      btnLoading.hidden = true;
+      btnSubmit.disabled = false;
+    }
+  });
+
+});
+
+/* ── HELPER: validar formulario ───────────────── */
+function validateForm(form) {
+  let valid = true;
+  form.querySelectorAll('[required]').forEach(input => {
+    input.classList.remove('af-invalid');
+    if (!input.value.trim()) {
+      input.classList.add('af-invalid');
+      valid = false;
+    }
+  });
+  if (!valid) {
+    form.querySelector('.af-invalid')?.focus();
+    form.querySelector('.af-invalid')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
+  return valid;
+}
+
+/* ── HELPER: recoger datos del formulario ─────── */
+function collectFormData(form) {
+  const data = {};
+  new FormData(form).forEach((val, key) => { data[key] = val; });
+  return data;
+}
+
+/* ── HELPER: construir cuerpo del correo ─────── */
+function buildEmailBody(d) {
+  return `SOLICITUD DE AFILIACIÓN — SINTRAPETROCOL
+Fecha: ${d.fechaSolicitud || '—'}
+
+DATOS PERSONALES
+Nombres:      ${d.nombres || '—'} ${d.apellidos || ''}
+Cédula:       ${d.cedula || '—'} (Exp. en ${d.expedidaEn || '—'})
+Nacimiento:   ${d.fnDia || '—'}/${d.fnMes || '—'}/${d.fnAno || '—'} — ${d.fnLugar || '—'}, ${d.fnDpto || '—'}
+Dirección:    ${d.direccion || '—'}, ${d.barrio || '—'}, ${d.municipio || '—'}
+Tel. Fijo:    ${d.telFijo || '—'}
+Tel. Celular: ${d.telCelular || '—'}
+Correo:       ${d.correo || '—'}
+Código empl.: ${d.codigo || '—'}`;
+}
+
+/* ── HELPER: anima contador de 0 a target ─────── */
+function animateCounter(el, target, duration = 1600) {
+  const startTime = performance.now();
+  function update(now) {
+    const progress = Math.min((now - startTime) / duration, 1);
+    const eased    = 1 - Math.pow(1 - progress, 3);
+    el.textContent = Math.round(eased * target);
+    if (progress < 1) requestAnimationFrame(update);
+    else el.textContent = target;
+  }
   requestAnimationFrame(update);
 }
 
-/* ── HELPER: detecta prefers-reduced-motion ──────── */
+/* ── HELPER: detecta prefers-reduced-motion ────── */
 function prefersReducedMotion() {
   return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 }
